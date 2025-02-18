@@ -38,3 +38,10 @@ export async function updateOrder(id: number, data: Partial<OrderData>) {
     data: data,
   });
 }
+
+/**
+ * ✅ Get all orders
+ */
+export async function getAllOrders() {
+  return await db.orders.findMany();
+}
