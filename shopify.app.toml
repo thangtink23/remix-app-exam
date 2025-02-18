@@ -1,35 +1,39 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
 client_id = "bdeb904d9b58594c978718f7cc90ec56"
-application_url = "https://asylum-bc-qualifying-nylon.trycloudflare.com"
+application_url = "https://budgets-budget-disappointed-princess.trycloudflare.com"
 embedded = true
 name = "remix-app-exam"
 handle = "remix-app-exam"
 
 [build]
-include_config_on_deploy = true
 automatically_update_urls_on_dev = true
+include_config_on_deploy = true
 
 [webhooks]
 api_version = "2025-01"
+
+  [[webhooks.subscriptions]]
+  topics = [ "app/scopes_update" ]
+  uri = "/webhooks/app/scopes_update"
 
   [[webhooks.subscriptions]]
   topics = [ "app/uninstalled" ]
   uri = "/webhooks/app/uninstalled"
 
   [[webhooks.subscriptions]]
-  topics = [ "app/scopes_update" ]
-  uri = "/webhooks/app/scopes_update"
+  topics = [ "orders/create", "orders/updated" ]
+  uri = "/webhooks/orders"
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = "write_products"
+scopes = "read_orders,write_products"
 
 [auth]
 redirect_urls = [
-  "https://asylum-bc-qualifying-nylon.trycloudflare.com/auth/callback",
-  "https://asylum-bc-qualifying-nylon.trycloudflare.com/auth/shopify/callback",
-  "https://asylum-bc-qualifying-nylon.trycloudflare.com/api/auth/callback"
+  "https://budgets-budget-disappointed-princess.trycloudflare.com/auth/callback",
+  "https://budgets-budget-disappointed-princess.trycloudflare.com/auth/shopify/callback",
+  "https://budgets-budget-disappointed-princess.trycloudflare.com/api/auth/callback"
 ]
 
 [pos]
