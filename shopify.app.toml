@@ -1,7 +1,7 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
 client_id = "bdeb904d9b58594c978718f7cc90ec56"
-application_url = "https://budgets-budget-disappointed-princess.trycloudflare.com"
+application_url = "https://warrant-evident-hopes-handle.trycloudflare.com"
 embedded = true
 name = "remix-app-exam"
 handle = "remix-app-exam"
@@ -27,13 +27,13 @@ api_version = "2025-01"
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = "read_orders,write_products"
+scopes = "read_customers,read_draft_orders,read_orders,read_products,write_draft_orders,write_orders,write_products"
 
 [auth]
 redirect_urls = [
-  "https://budgets-budget-disappointed-princess.trycloudflare.com/auth/callback",
-  "https://budgets-budget-disappointed-princess.trycloudflare.com/auth/shopify/callback",
-  "https://budgets-budget-disappointed-princess.trycloudflare.com/api/auth/callback"
+  "https://warrant-evident-hopes-handle.trycloudflare.com/auth/callback",
+  "https://warrant-evident-hopes-handle.trycloudflare.com/auth/shopify/callback",
+  "https://warrant-evident-hopes-handle.trycloudflare.com/api/auth/callback"
 ]
 
 [pos]
