@@ -1,10 +1,19 @@
 import { json, LoaderFunction } from "@remix-run/node";
 import { useLoaderData, Link } from "@remix-run/react";
 import { authenticate } from "../shopify.server";
-import { Card, EmptyState, Layout, Page, IndexTable } from "@shopify/polaris";
+import {
+  Card,
+  EmptyState,
+  Layout,
+  Page,
+  IndexTable,
+  IndexFiltersProps,
+  IndexFilters,
+  useSetIndexFiltersMode,
+} from "@shopify/polaris";
 import { Orders } from "@prisma/client";
 import { getAllOrders } from "../models/order.server";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { generateCSVContent } from "app/utils/csv_export";
 
 // Loader function
@@ -87,6 +96,10 @@ const OrderTable = ({ orders }: { orders: Orders[] }) => {
         { title: "" },
       ]}
       selectable={false}
+      pagination={{
+        hasNext: true,
+        onNext: () => {},
+      }}
     >
       {rows}
     </IndexTable>
@@ -95,7 +108,30 @@ const OrderTable = ({ orders }: { orders: Orders[] }) => {
 
 // Main Component
 export default function Index() {
+  const [sortSelected, setSortSelected] = useState(["date desc"]);
   const { orders }: { orders: any[] } = useLoaderData();
+  // Sort orders based on selected option
+  const sortedOrders = [...orders].sort((a, b) => {
+    if (sortSelected.includes("date")) {
+      return sortSelected.includes("asc")
+        ? new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        : new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    }
+    if (sortSelected.includes("total_price")) {
+      return sortSelected.includes("asc")
+        ? a.totalPrice - b.totalPrice
+        : b.totalPrice - a.totalPrice;
+    }
+  });
+  const sortOptions: IndexFiltersProps["sortOptions"] = [
+    { label: "Date", value: "date asc", directionLabel: "A-Z" },
+    { label: "Date", value: "date desc", directionLabel: "Z-A" },
+    { label: "Total", value: "total_price asc", directionLabel: "Ascending" },
+    { label: "Total", value: "total_price desc", directionLabel: "Descending" },
+  ];
+
+  const { mode, setMode } = useSetIndexFiltersMode();
+
   return (
     <Page>
       <ui-title-bar title="Order Table">
@@ -109,7 +145,27 @@ export default function Index() {
             {orders.length === 0 ? (
               <EmptyOrderState />
             ) : (
-              <OrderTable orders={orders} />
+              <>
+                <IndexFilters
+                  tabs={[]}
+                  sortOptions={sortOptions}
+                  sortSelected={sortSelected}
+                  selected={0}
+                  onSort={(value) => {
+                    setSortSelected(value);
+                  }}
+                  onQueryChange={() => {}}
+                  onQueryClear={() => {}}
+                  filters={[]}
+                  onClearAll={() => {}}
+                  appliedFilters={[]}
+                  hideFilters
+                  hideQueryField
+                  mode={mode}
+                  setMode={setMode}
+                />
+                <OrderTable orders={sortedOrders} />
+              </>
             )}
           </Card>
         </Layout.Section>
